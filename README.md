@@ -9,9 +9,9 @@
 - ["The Whiteness of the Winnowing Fan"](http://contemporaryhaibunonline.com/pages53/Berg_TheWhiteness.html)
 
 ### Some Code
-- ndn: scripts to generate d20 characters, encounters, and adventures 
-- sidescroll: a web-based eBook reader framework
-- bad: a programming language development sandbox
+- [ndn](https://github.com/ebberg/ndn): scripts to generate d20 characters, encounters, and adventures 
+- [sidescroll](https://github.com/ebberg/sidescroll): a web-based eBook reader framework
+- [bad](https://github.com/ebberg/bad): a programming language development sandbox
 
 ### Why ericbergericberg.com?
 ericberg.com was taken!  I improvised.
