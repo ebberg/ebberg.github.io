@@ -17,7 +17,7 @@
 ericberg.com was taken!  I improvised.
 
 ### Around the Internet
-- GitHub: [ebberg](https://github.com/ebberg)
+- GitHub: [@ebberg](https://github.com/ebberg)
 - Twitter: [@ebberg](https://twitter.com/ebberg)
 - Tumblr: [ericbergericberg](http://ericbergericberg.tumblr.com)
 
