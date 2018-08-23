@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <title>"Eric Berg Eric Berg" by Eric Berg</title>
+</head>
+<body>
+    <div id="ericbergericberg">
+        "Eric Berg Eric Berg" by Eric Berg..<br \><br \>
+    </div>
+    <script>
+        var ericberg = 2;
+        var printEricBerg = function() {
+            if (ericberg > 16384) {
+                document.getElementById('ericbergericberg').insertAdjacentHTML('beforeend', ('<a href="/blog">Eric Berg.</a>'));
+                return;
+            }
+            var count = ericberg;
+            while (count > 0) {
+                document.getElementById('ericbergericberg').insertAdjacentHTML('beforeend', ('Eric Berg '));
+                count--;
+            }
+            ericberg = ericberg * 2;
+            window.setTimeout(printEricBerg, 1000);
+        }
+        window.setTimeout(printEricBerg, 2000);
+    </script>
+</body>
+</html>
