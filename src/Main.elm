@@ -1,7 +1,6 @@
 module Main exposing (main)
 
 import Browser exposing (Document)
-import Content exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (attribute, class, href, id, type_)
 import Html.Events exposing (onClick)
@@ -53,11 +52,11 @@ viewContainer model =
         , div [ class "row" ]
             [ div [ class "col-md" ]
                 [ h2 [] [ text "Eric Berg" ]
-                , Markdown.toHtml [] contentAbout
+                , Markdown.toHtml [] model.title
                 ]
             , div [ class "col-md" ]
                 [ h2 [] [ text "Eric Berg" ]
-                , Markdown.toHtml [] contentProjects
+                , Markdown.toHtml [] model.title
                 ]
             ]
         ]
