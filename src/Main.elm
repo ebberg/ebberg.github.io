@@ -18,6 +18,7 @@ main =
 
 type alias Model =
     { title : String
+    , count : Int
     }
 
 
@@ -27,13 +28,46 @@ type Msg
 
 init : Int -> ( Model, Cmd Msg )
 init currentTime =
-    ( Model "Eric Berg Eric Berg", Cmd.none )
+    ( Model "Eric Berg Eric Berg" 0, Cmd.none )
+
+
+contentPersonalBrand =
+    """
+[Etym Press](https://etympress.com)
+"""
+
+
+contentUnfolding =
+    """
+[Jagged Letter](https://jaggedletter.com)
+"""
+
+
+contentSpirals =
+    """
+[bergd.net](https://bergd.net)
+"""
 
 
 update msg model =
     case msg of
         EricBergEricBerg ->
-            ( { model | title = model.title ++ " " ++ model.title }
+            ( { model
+                | title =
+                    case model.count of
+                        1 ->
+                            model.title ++ " " ++ contentPersonalBrand ++ " " ++ model.title
+
+                        3 ->
+                            model.title ++ " " ++ contentUnfolding ++ " " ++ model.title
+
+                        5 ->
+                            model.title ++ " " ++ contentSpirals ++ " " ++ model.title
+
+                        _ ->
+                            model.title ++ " " ++ model.title
+                , count = model.count + 1
+              }
             , Cmd.none
             )
 
@@ -66,7 +100,7 @@ viewContainer model =
 viewNav model =
     nav [ class "navbar navbar-expand-lg navbar-dark bg-dark" ]
         [ button [ class "btn btn-link navbar-brand", onClick EricBergEricBerg ] [ text "Eric Berg" ]
-        , span [ class "navbar-text" ] [ text model.title ]
+        , span [ class "navbar-text" ] [ Markdown.toHtml [] model.title ]
         ]
 
 
