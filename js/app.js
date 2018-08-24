@@ -770,11 +770,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.M.A === region.S.A)
+	if (region.M.B === region.S.B)
 	{
-		return 'on line ' + region.M.A;
+		return 'on line ' + region.M.B;
 	}
-	return 'on lines ' + region.M.A + ' through ' + region.S.A;
+	return 'on lines ' + region.M.B + ' through ' + region.S.B;
 }
 
 
@@ -4002,7 +4002,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		impl.aG,
 		impl.aE,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.B && impl.B(sendToApp)
+			var divertHrefToApp = impl.C && impl.C(sendToApp)
 			var view = impl.aI;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -4016,7 +4016,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.E) && (_VirtualDom_doc.title = title = doc.E);
+				(title !== doc.q) && (_VirtualDom_doc.title = title = doc.q);
 			});
 		}
 	);
@@ -4072,7 +4072,7 @@ function _Browser_application(impl)
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		B: function(sendToApp)
+		C: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4170,17 +4170,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aw: 'hidden', z: 'visibilitychange' }
+		? { aw: 'hidden', A: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aw: 'mozHidden', z: 'mozvisibilitychange' }
+		? { aw: 'mozHidden', A: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aw: 'msHidden', z: 'msvisibilitychange' }
+		? { aw: 'msHidden', A: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aw: 'webkitHidden', z: 'webkitvisibilitychange' }
-		: { aw: 'hidden', z: 'visibilitychange' };
+		? { aw: 'webkitHidden', A: 'webkitvisibilitychange' }
+		: { aw: 'hidden', A: 'visibilitychange' };
 }
 
 
@@ -4265,8 +4265,8 @@ function _Browser_getViewport()
 		an: {
 			H: _Browser_window.pageXOffset,
 			I: _Browser_window.pageYOffset,
-			x: _Browser_doc.documentElement.clientWidth,
-			s: _Browser_doc.documentElement.clientHeight
+			y: _Browser_doc.documentElement.clientWidth,
+			t: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4276,8 +4276,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		x: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		s: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		y: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		t: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4301,14 +4301,14 @@ function _Browser_getViewportOf(id)
 	{
 		return {
 			aj: {
-				x: node.scrollWidth,
-				s: node.scrollHeight
+				y: node.scrollWidth,
+				t: node.scrollHeight
 			},
 			an: {
 				H: node.scrollLeft,
 				I: node.scrollTop,
-				x: node.clientWidth,
-				s: node.clientHeight
+				y: node.clientWidth,
+				t: node.clientHeight
 			}
 		};
 	});
@@ -4342,14 +4342,14 @@ function _Browser_getElement(id)
 			an: {
 				H: x,
 				I: y,
-				x: _Browser_doc.documentElement.clientWidth,
-				s: _Browser_doc.documentElement.clientHeight
+				y: _Browser_doc.documentElement.clientWidth,
+				t: _Browser_doc.documentElement.clientHeight
 			},
 			at: {
 				H: x + rect.left,
 				I: y + rect.top,
-				x: rect.width,
-				s: rect.height
+				y: rect.width,
+				t: rect.height
 			}
 		};
 	});
@@ -4385,7 +4385,7 @@ function _Browser_load(url)
 	}));
 }
 var author$project$Main$Model = function (title) {
-	return {E: title};
+	return {q: title};
 };
 var elm$core$Basics$False = 1;
 var elm$core$Basics$True = 0;
@@ -4879,11 +4879,9 @@ var author$project$Main$update = F2(
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{E: model.E + (' ' + model.E)}),
+				{q: model.q + (' ' + model.q)}),
 			elm$core$Platform$Cmd$none);
 	});
-var author$project$Content$contentAbout = 'Eric Berg Eric Berg';
-var author$project$Content$contentProjects = 'Eric Berg Eric Berg';
 var author$project$Main$EricBergEricBerg = 0;
 var elm$core$Basics$identity = function (x) {
 	return x;
@@ -4962,7 +4960,7 @@ var author$project$Main$viewNav = function (model) {
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text(model.E)
+						elm$html$Html$text(model.q)
 					]))
 			]));
 };
@@ -5029,7 +5027,7 @@ var author$project$Main$viewContainer = function (model) {
 										[
 											elm$html$Html$text('Eric Berg')
 										])),
-									A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, author$project$Content$contentAbout)
+									A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, model.q)
 								])),
 							A2(
 							elm$html$Html$div,
@@ -5046,7 +5044,7 @@ var author$project$Main$viewContainer = function (model) {
 										[
 											elm$html$Html$text('Eric Berg')
 										])),
-									A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, author$project$Content$contentProjects)
+									A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, model.q)
 								]))
 						]))
 				]))
@@ -5054,7 +5052,7 @@ var author$project$Main$viewContainer = function (model) {
 };
 var elm$browser$Browser$Document = F2(
 	function (title, body) {
-		return {aq: body, E: title};
+		return {aq: body, q: title};
 	});
 var author$project$Main$view = function (model) {
 	return A2(
