@@ -1,28 +1,20 @@
 <!doctype html>
 <html>
-<head>
-    <title>"Eric Berg Eric Berg" by Eric Berg</title>
-</head>
-<body>
-    <div id="ericbergericberg">
-        "Eric Berg Eric Berg" by Eric Berg..<br \><br \>
-    </div>
-    <script>
-        var ericberg = 2;
-        var printEricBerg = function() {
-            if (ericberg > 16384) {
-                document.getElementById('ericbergericberg').insertAdjacentHTML('beforeend', ('<a href="/blog">Eric Berg.</a>'));
-                return;
-            }
-            var count = ericberg;
-            while (count > 0) {
-                document.getElementById('ericbergericberg').insertAdjacentHTML('beforeend', ('Eric Berg '));
-                count--;
-            }
-            ericberg = ericberg * 2;
-            window.setTimeout(printEricBerg, 1000);
-        }
-        window.setTimeout(printEricBerg, 2000);
-    </script>
-</body>
+  <head>
+    <title>Eric Berg Eric Berg</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+
+  </head>
+  <body>
+    <script>var app = Elm.Main.init({flags: Date.now()});</script>
+  </body>
 </html>
