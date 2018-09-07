@@ -5,6 +5,10 @@ import Html exposing (..)
 import Html.Attributes exposing (attribute, class, href, id, type_)
 import Html.Events exposing (onClick)
 import Markdown
+import Random
+
+
+-- MAIN
 
 
 main =
@@ -16,65 +20,49 @@ main =
         }
 
 
+
+-- MODEL
+
+
 type alias Model =
     { title : String
-    , count : Int
     }
 
 
 type Msg
-    = EricBergEricBerg
+    = NoOp
 
 
 init : Int -> ( Model, Cmd Msg )
 init currentTime =
-    ( Model "Eric Berg Eric Berg" 0, Cmd.none )
+    ( Model "Eric Berg Eric Berg", Cmd.none )
 
 
-contentPersonalBrand =
-    """
-[Etym Press](https://etympress.com)
-"""
 
-
-contentUnfolding =
-    """
-[Jagged Letter](https://jaggedletter.com)
-"""
-
-
-contentSpirals =
-    """
-[bergd.net](https://bergd.net)
-"""
+-- UPDATE
 
 
 update msg model =
     case msg of
-        EricBergEricBerg ->
-            ( { model
-                | title =
-                    case model.count of
-                        1 ->
-                            model.title ++ " " ++ contentPersonalBrand ++ " " ++ model.title
+        NoOp ->
+            ( model, Cmd.none )
 
-                        3 ->
-                            model.title ++ " " ++ contentUnfolding ++ " " ++ model.title
 
-                        5 ->
-                            model.title ++ " " ++ contentSpirals ++ " " ++ model.title
 
-                        _ ->
-                            model.title ++ " " ++ model.title
-                , count = model.count + 1
-              }
-            , Cmd.none
-            )
+-- SUBSCRIPTIONS
+
+
+subscriptions model =
+    Sub.none
+
+
+
+-- VIEW
 
 
 view model =
     Document
-        "Eric Berg Eric Berg"
+        model.title
         (viewContainer model)
 
 
@@ -82,27 +70,61 @@ viewContainer model =
     [ div [ class "container" ]
         [ viewNav model
         , br [] []
-        , h1 [] [ text "Eric Berg" ]
         , div [ class "row" ]
-            [ div [ class "col-md" ]
-                [ h2 [] [ text "Eric Berg" ]
-                , Markdown.toHtml [] model.title
-                ]
-            , div [ class "col-md" ]
-                [ h2 [] [ text "Eric Berg" ]
-                , Markdown.toHtml [] model.title
-                ]
+            [ div [ class "col-lg" ] <|
+                viewIntro model
+            , div [ class "col-lg" ] <|
+                viewHyperlinks model
             ]
         ]
     ]
 
 
+viewIntro model =
+    [ h1 [ class "display-4" ] [ text model.title ]
+    , Markdown.toHtml [ class "lead" ]
+        contentLead
+    , hr [ class "my-4" ] []
+    , Markdown.toHtml [] contentAfterFold
+    ]
+
+
+viewHyperlinks model =
+    [ h2 [ class "display-4" ]
+        [ text "Stories and Poems" ]
+    , div [ class "list-group" ]
+        (List.map
+            (\( link, title ) ->
+                a
+                    [ href link
+                    , class "list-group-item list-group-item-action"
+                    ]
+                    [ text title ]
+            )
+            [ ( "#ericberg", "'Eric Berg Eric Berg' by Eric Berg" )
+            , ( "#integer-quest", "Integer Quest" )
+            , ( "#apocalypse-move", "Apocalypse Move" )
+            ]
+        )
+    ]
+
+
 viewNav model =
-    nav [ class "navbar navbar-expand-lg navbar-dark bg-dark" ]
-        [ button [ class "btn btn-link navbar-brand", onClick EricBergEricBerg ] [ text "Eric Berg" ]
-        , span [ class "navbar-text" ] [ Markdown.toHtml [] model.title ]
+    nav [ class "navbar navbar-expand-lg navbar-dark bg-primary" ]
+        [ a [ class "btn btn-link navbar-brand", href "/" ]
+            [ text model.title ]
         ]
 
 
-subscriptions model =
-    Sub.none
+contentLead =
+    """
+Welcome to my doubly concatenated website. It was a blog for a while, then a book-like interface to a blog, and finally a browser-crashing poem. Then it vanished, unregistered.
+"""
+
+
+contentAfterFold =
+    """
+I'm going to be publishing stories and poems here, coming in all forms. What are REST API logs but a hypertext story? What is a program but a poem?
+
+The first batch are short. There's the browser-crashing one, one about addictive internet games, and one that's Powered by the Apocalypse inspired.
+"""
