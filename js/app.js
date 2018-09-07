@@ -770,11 +770,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.N.B === region.T.B)
+	if (region.M.A === region.S.A)
 	{
-		return 'on line ' + region.N.B;
+		return 'on line ' + region.M.A;
 	}
-	return 'on lines ' + region.N.B + ' through ' + region.T.B;
+	return 'on lines ' + region.M.A + ' through ' + region.S.A;
 }
 
 
@@ -1841,9 +1841,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aH,
-		impl.aF,
+		impl.ay,
+		impl.aG,
+		impl.aE,
 		function() { return function() {} }
 	);
 });
@@ -2643,9 +2643,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		l: func(record.l),
-		O: record.O,
-		M: record.M
+		k: func(record.k),
+		N: record.N,
+		L: record.L
 	}
 });
 
@@ -2913,11 +2913,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.l;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.O;
+		var message = !tag ? value : tag < 3 ? value.a : value.k;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.N;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.M) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.L) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3924,9 +3924,9 @@ function _Markdown_formatOptions(options)
 {
 	function toHighlight(code, lang)
 	{
-		if (!lang && elm$core$Maybe$isJust(options.S))
+		if (!lang && elm$core$Maybe$isJust(options.R))
 		{
-			lang = options.S.a;
+			lang = options.R.a;
 		}
 
 		if (typeof hljs !== 'undefined' && lang && hljs.listLanguages().indexOf(lang) >= 0)
@@ -3937,15 +3937,15 @@ function _Markdown_formatOptions(options)
 		return code;
 	}
 
-	var gfm = options.W.a;
+	var gfm = options.V.a;
 
 	return {
 		highlight: toHighlight,
 		gfm: gfm,
-		tables: gfm && gfm.aG,
-		breaks: gfm && gfm.as,
-		sanitize: options.aj,
-		smartypants: options.al
+		tables: gfm && gfm.aF,
+		breaks: gfm && gfm.ar,
+		sanitize: options.ai,
+		smartypants: options.ak
 	};
 }
 
@@ -3962,11 +3962,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aH,
-		impl.aF,
+		impl.ay,
+		impl.aG,
+		impl.aE,
 		function(sendToApp, initialModel) {
-			var view = impl.aJ;
+			var view = impl.aI;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3998,12 +3998,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aH,
-		impl.aF,
+		impl.ay,
+		impl.aG,
+		impl.aE,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.C && impl.C(sendToApp)
-			var view = impl.aJ;
+			var divertHrefToApp = impl.B && impl.B(sendToApp)
+			var view = impl.aI;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -4011,12 +4011,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ar);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.f) && (_VirtualDom_doc.title = title = doc.f);
+				(title !== doc.G) && (_VirtualDom_doc.title = title = doc.G);
 			});
 		}
 	);
@@ -4067,12 +4067,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aB;
-	var onUrlRequest = impl.aC;
+	var onUrlChange = impl.aA;
+	var onUrlRequest = impl.aB;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		C: function(sendToApp)
+		B: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4088,9 +4088,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.af === next.af
-							&& curr.X === next.X
-							&& curr.ac.a === next.ac.a
+							&& curr.ae === next.ae
+							&& curr.W === next.W
+							&& curr.ab.a === next.ab.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -4098,13 +4098,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		az: function(flags)
+		ay: function(flags)
 		{
-			return A3(impl.az, flags, _Browser_getUrl(), key);
+			return A3(impl.ay, flags, _Browser_getUrl(), key);
 		},
-		aJ: impl.aJ,
-		aH: impl.aH,
-		aF: impl.aF
+		aI: impl.aI,
+		aG: impl.aG,
+		aE: impl.aE
 	});
 }
 
@@ -4170,17 +4170,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ax: 'hidden', A: 'visibilitychange' }
+		? { aw: 'hidden', z: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ax: 'mozHidden', A: 'mozvisibilitychange' }
+		? { aw: 'mozHidden', z: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ax: 'msHidden', A: 'msvisibilitychange' }
+		? { aw: 'msHidden', z: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ax: 'webkitHidden', A: 'webkitvisibilitychange' }
-		: { ax: 'hidden', A: 'visibilitychange' };
+		? { aw: 'webkitHidden', z: 'webkitvisibilitychange' }
+		: { aw: 'hidden', z: 'visibilitychange' };
 }
 
 
@@ -4261,12 +4261,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ak: _Browser_getScene(),
-		ao: {
-			I: _Browser_window.pageXOffset,
-			J: _Browser_window.pageYOffset,
-			y: _Browser_doc.documentElement.clientWidth,
-			t: _Browser_doc.documentElement.clientHeight
+		aj: _Browser_getScene(),
+		an: {
+			H: _Browser_window.pageXOffset,
+			I: _Browser_window.pageYOffset,
+			x: _Browser_doc.documentElement.clientWidth,
+			s: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4276,8 +4276,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		y: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		t: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		x: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		s: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4300,15 +4300,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ak: {
-				y: node.scrollWidth,
-				t: node.scrollHeight
+			aj: {
+				x: node.scrollWidth,
+				s: node.scrollHeight
 			},
-			ao: {
-				I: node.scrollLeft,
-				J: node.scrollTop,
-				y: node.clientWidth,
-				t: node.clientHeight
+			an: {
+				H: node.scrollLeft,
+				I: node.scrollTop,
+				x: node.clientWidth,
+				s: node.clientHeight
 			}
 		};
 	});
@@ -4338,18 +4338,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ak: _Browser_getScene(),
-			ao: {
-				I: x,
-				J: y,
-				y: _Browser_doc.documentElement.clientWidth,
-				t: _Browser_doc.documentElement.clientHeight
+			aj: _Browser_getScene(),
+			an: {
+				H: x,
+				I: y,
+				x: _Browser_doc.documentElement.clientWidth,
+				s: _Browser_doc.documentElement.clientHeight
 			},
-			au: {
-				I: x + rect.left,
-				J: y + rect.top,
-				y: rect.width,
-				t: rect.height
+			at: {
+				H: x + rect.left,
+				I: y + rect.top,
+				x: rect.width,
+				s: rect.height
 			}
 		};
 	});
@@ -4384,10 +4384,9 @@ function _Browser_load(url)
 		}
 	}));
 }
-var author$project$Main$Model = F2(
-	function (title, count) {
-		return {H: count, f: title};
-	});
+var author$project$Main$Model = function (title) {
+	return {G: title};
+};
 var elm$core$Basics$False = 1;
 var elm$core$Basics$True = 0;
 var elm$core$Result$isOk = function (result) {
@@ -4867,7 +4866,7 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$Main$init = function (currentTime) {
 	return _Utils_Tuple2(
-		A2(author$project$Main$Model, 'Eric Berg Eric Berg', 0),
+		author$project$Main$Model('Eric Berg Eric Berg'),
 		elm$core$Platform$Cmd$none);
 };
 var elm$core$Platform$Sub$batch = _Platform_batch;
@@ -4875,229 +4874,10 @@ var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$subscriptions = function (model) {
 	return elm$core$Platform$Sub$none;
 };
-var author$project$Main$contentPersonalBrand = '\n[Etym Press](https://etympress.com)\n';
-var author$project$Main$contentSpirals = '\n[bergd.net](https://bergd.net)\n';
-var author$project$Main$contentUnfolding = '\n[Jagged Letter](https://jaggedletter.com)\n';
 var author$project$Main$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(
-			_Utils_update(
-				model,
-				{
-					H: model.H + 1,
-					f: function () {
-						var _n1 = model.H;
-						switch (_n1) {
-							case 1:
-								return model.f + (' ' + (author$project$Main$contentPersonalBrand + (' ' + model.f)));
-							case 3:
-								return model.f + (' ' + (author$project$Main$contentUnfolding + (' ' + model.f)));
-							case 5:
-								return model.f + (' ' + (author$project$Main$contentSpirals + (' ' + model.f)));
-							default:
-								return model.f + (' ' + model.f);
-						}
-					}()
-				}),
-			elm$core$Platform$Cmd$none);
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 	});
-var author$project$Main$EricBergEricBerg = 0;
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
-var elm$json$Json$Decode$map = _Json_map1;
-var elm$json$Json$Decode$map2 = _Json_map2;
-var elm$json$Json$Decode$succeed = _Json_succeed;
-var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
-	switch (handler.$) {
-		case 0:
-			return 0;
-		case 1:
-			return 1;
-		case 2:
-			return 2;
-		default:
-			return 3;
-	}
-};
-var elm$html$Html$button = _VirtualDom_node('button');
-var elm$html$Html$nav = _VirtualDom_node('nav');
-var elm$html$Html$span = _VirtualDom_node('span');
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
-var elm$json$Json$Encode$string = _Json_wrap;
-var elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			elm$json$Json$Encode$string(string));
-	});
-var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
-var elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			elm$virtual_dom$VirtualDom$on,
-			event,
-			elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		elm$html$Html$Events$on,
-		'click',
-		elm$json$Json$Decode$succeed(msg));
-};
-var elm_explorations$markdown$Markdown$defaultOptions = {
-	S: elm$core$Maybe$Nothing,
-	W: elm$core$Maybe$Just(
-		{as: false, aG: false}),
-	aj: true,
-	al: false
-};
-var elm$core$Maybe$isJust = function (maybe) {
-	if (!maybe.$) {
-		return true;
-	} else {
-		return false;
-	}
-};
-var elm_explorations$markdown$Markdown$toHtmlWith = _Markdown_toHtml;
-var elm_explorations$markdown$Markdown$toHtml = elm_explorations$markdown$Markdown$toHtmlWith(elm_explorations$markdown$Markdown$defaultOptions);
-var author$project$Main$viewNav = function (model) {
-	return A2(
-		elm$html$Html$nav,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$class('navbar navbar-expand-lg navbar-dark bg-dark')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				elm$html$Html$button,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('btn btn-link navbar-brand'),
-						elm$html$Html$Events$onClick(0)
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text('Eric Berg')
-					])),
-				A2(
-				elm$html$Html$span,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('navbar-text')
-					]),
-				_List_fromArray(
-					[
-						A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, model.f)
-					]))
-			]));
-};
-var elm$html$Html$br = _VirtualDom_node('br');
-var elm$html$Html$div = _VirtualDom_node('div');
-var elm$html$Html$h1 = _VirtualDom_node('h1');
-var elm$html$Html$h2 = _VirtualDom_node('h2');
-var author$project$Main$viewContainer = function (model) {
-	return _List_fromArray(
-		[
-			A2(
-			elm$html$Html$div,
-			_List_fromArray(
-				[
-					elm$html$Html$Attributes$class('container')
-				]),
-			_List_fromArray(
-				[
-					author$project$Main$viewNav(model),
-					A2(elm$html$Html$br, _List_Nil, _List_Nil),
-					A2(
-					elm$html$Html$h1,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Eric Berg')
-						])),
-					A2(
-					elm$html$Html$div,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('row')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$div,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$class('col-md')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$h2,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Eric Berg')
-										])),
-									A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, model.f)
-								])),
-							A2(
-							elm$html$Html$div,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$class('col-md')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$h2,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Eric Berg')
-										])),
-									A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, model.f)
-								]))
-						]))
-				]))
-		]);
-};
-var elm$browser$Browser$Document = F2(
-	function (title, body) {
-		return {ar: body, f: title};
-	});
-var author$project$Main$view = function (model) {
-	return A2(
-		elm$browser$Browser$Document,
-		'Eric Berg Eric Berg',
-		author$project$Main$viewContainer(model));
-};
-var elm$browser$Browser$External = function (a) {
-	return {$: 1, a: a};
-};
-var elm$browser$Browser$Internal = function (a) {
-	return {$: 0, a: a};
-};
-var elm$browser$Browser$Dom$NotFound = elm$core$Basics$identity;
-var elm$core$Basics$never = function (_n0) {
-	never:
-	while (true) {
-		var nvr = _n0;
-		var $temp$_n0 = nvr;
-		_n0 = $temp$_n0;
-		continue never;
-	}
-};
-var elm$core$Task$Perform = elm$core$Basics$identity;
-var elm$core$Task$succeed = _Scheduler_succeed;
-var elm$core$Task$init = elm$core$Task$succeed(0);
 var elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -5167,6 +4947,230 @@ var elm$core$List$map = F2(
 			_List_Nil,
 			xs);
 	});
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
+var elm$json$Json$Decode$map = _Json_map1;
+var elm$json$Json$Decode$map2 = _Json_map2;
+var elm$json$Json$Decode$succeed = _Json_succeed;
+var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
+	switch (handler.$) {
+		case 0:
+			return 0;
+		case 1:
+			return 1;
+		case 2:
+			return 2;
+		default:
+			return 3;
+	}
+};
+var elm$html$Html$a = _VirtualDom_node('a');
+var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$h2 = _VirtualDom_node('h2');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$json$Json$Encode$string = _Json_wrap;
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var author$project$Main$viewHyperlinks = function (model) {
+	return _List_fromArray(
+		[
+			A2(
+			elm$html$Html$h2,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('display-4')
+				]),
+			_List_fromArray(
+				[
+					elm$html$Html$text('Stories and Poems')
+				])),
+			A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('list-group')
+				]),
+			A2(
+				elm$core$List$map,
+				function (_n0) {
+					var link = _n0.a;
+					var title = _n0.b;
+					return A2(
+						elm$html$Html$a,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$href(link),
+								elm$html$Html$Attributes$class('list-group-item list-group-item-action')
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text(title)
+							]));
+				},
+				_List_fromArray(
+					[
+						_Utils_Tuple2('#ericberg', '\'Eric Berg Eric Berg\' by Eric Berg'),
+						_Utils_Tuple2('#integer-quest', 'Integer Quest'),
+						_Utils_Tuple2('#apocalypse-move', 'Apocalypse Move')
+					])))
+		]);
+};
+var author$project$Main$contentAfterFold = '\nI\'m going to be publishing stories and poems here, coming in all forms. What are REST API logs but a hypertext story? What is a program but a poem?\n\nThe first batch are short. There\'s the browser-crashing one, one about addictive internet games, and one that\'s Powered by the Apocalypse inspired.\n';
+var author$project$Main$contentLead = '\nWelcome to my doubly concatenated website. It was a blog for a while, then a book-like interface to a blog, and finally a browser-crashing poem. Then it vanished, unregistered.\n';
+var elm$html$Html$h1 = _VirtualDom_node('h1');
+var elm$html$Html$hr = _VirtualDom_node('hr');
+var elm_explorations$markdown$Markdown$defaultOptions = {
+	R: elm$core$Maybe$Nothing,
+	V: elm$core$Maybe$Just(
+		{ar: false, aF: false}),
+	ai: true,
+	ak: false
+};
+var elm$core$Maybe$isJust = function (maybe) {
+	if (!maybe.$) {
+		return true;
+	} else {
+		return false;
+	}
+};
+var elm_explorations$markdown$Markdown$toHtmlWith = _Markdown_toHtml;
+var elm_explorations$markdown$Markdown$toHtml = elm_explorations$markdown$Markdown$toHtmlWith(elm_explorations$markdown$Markdown$defaultOptions);
+var author$project$Main$viewIntro = function (model) {
+	return _List_fromArray(
+		[
+			A2(
+			elm$html$Html$h1,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('display-4')
+				]),
+			_List_fromArray(
+				[
+					elm$html$Html$text(model.G)
+				])),
+			A2(
+			elm_explorations$markdown$Markdown$toHtml,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('lead')
+				]),
+			author$project$Main$contentLead),
+			A2(
+			elm$html$Html$hr,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('my-4')
+				]),
+			_List_Nil),
+			A2(elm_explorations$markdown$Markdown$toHtml, _List_Nil, author$project$Main$contentAfterFold)
+		]);
+};
+var elm$html$Html$nav = _VirtualDom_node('nav');
+var author$project$Main$viewNav = function (model) {
+	return A2(
+		elm$html$Html$nav,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('navbar navbar-expand-lg navbar-dark bg-primary')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$a,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('btn btn-link navbar-brand'),
+						elm$html$Html$Attributes$href('/')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text(model.G)
+					]))
+			]));
+};
+var elm$html$Html$br = _VirtualDom_node('br');
+var author$project$Main$viewContainer = function (model) {
+	return _List_fromArray(
+		[
+			A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('container')
+				]),
+			_List_fromArray(
+				[
+					author$project$Main$viewNav(model),
+					A2(elm$html$Html$br, _List_Nil, _List_Nil),
+					A2(
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$class('row')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$div,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('col-lg')
+								]),
+							author$project$Main$viewIntro(model)),
+							A2(
+							elm$html$Html$div,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('col-lg')
+								]),
+							author$project$Main$viewHyperlinks(model))
+						]))
+				]))
+		]);
+};
+var elm$browser$Browser$Document = F2(
+	function (title, body) {
+		return {aq: body, G: title};
+	});
+var author$project$Main$view = function (model) {
+	return A2(
+		elm$browser$Browser$Document,
+		model.G,
+		author$project$Main$viewContainer(model));
+};
+var elm$browser$Browser$External = function (a) {
+	return {$: 1, a: a};
+};
+var elm$browser$Browser$Internal = function (a) {
+	return {$: 0, a: a};
+};
+var elm$browser$Browser$Dom$NotFound = elm$core$Basics$identity;
+var elm$core$Basics$never = function (_n0) {
+	never:
+	while (true) {
+		var nvr = _n0;
+		var $temp$_n0 = nvr;
+		_n0 = $temp$_n0;
+		continue never;
+	}
+};
+var elm$core$Task$Perform = elm$core$Basics$identity;
+var elm$core$Task$succeed = _Scheduler_succeed;
+var elm$core$Task$init = elm$core$Task$succeed(0);
 var elm$core$Task$andThen = _Scheduler_andThen;
 var elm$core$Task$map = F2(
 	function (func, taskA) {
@@ -5264,7 +5268,7 @@ var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {V: fragment, X: host, aa: path, ac: port_, af: protocol, ag: query};
+		return {U: fragment, W: host, _: path, ab: port_, ae: protocol, af: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -5371,5 +5375,5 @@ var elm$url$Url$fromString = function (str) {
 var elm$browser$Browser$document = _Browser_document;
 var elm$json$Json$Decode$int = _Json_decodeInt;
 var author$project$Main$main = elm$browser$Browser$document(
-	{az: author$project$Main$init, aF: author$project$Main$subscriptions, aH: author$project$Main$update, aJ: author$project$Main$view});
+	{ay: author$project$Main$init, aE: author$project$Main$subscriptions, aG: author$project$Main$update, aI: author$project$Main$view});
 _Platform_export({'Main':{'init':author$project$Main$main(elm$json$Json$Decode$int)(0)}});}(this));
