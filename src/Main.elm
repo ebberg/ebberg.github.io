@@ -9,11 +9,12 @@ import Markdown
 import Random
 import Time
 import Url exposing (Url)
-import Url.Builder as Builder exposing (absolute)
+import Url.Builder as Builder exposing (Root(..))
 import Url.Parser
     exposing
-        ( (<?>)
+        ( (</>)
         , Parser
+        , fragment
         , map
         , oneOf
         , parse
@@ -68,7 +69,7 @@ type Route
 routeParser : Parser (Route -> a) a
 routeParser =
     oneOf
-        [ map Hypertext <| top <?> Query.string "q"
+        [ map Hypertext <| top </> fragment identity
         ]
 
 
@@ -199,10 +200,17 @@ viewHypertext model q =
             , p [] [ text <| String.fromInt model.quest ]
             ]
 
-        "apocalypse-move" ->
+        "the-guild" ->
             [ viewNav model
             , br [] []
-            , p [] [ text "Apocalypse Move" ]
+            , p [] [ text "The Guild" ]
+            , p [] [ text "Coming soon..." ]
+            ]
+
+        "space-crawler" ->
+            [ viewNav model
+            , br [] []
+            , p [] [ text "Space Crawler" ]
             , p [] [ text "Coming soon..." ]
             ]
 
@@ -236,28 +244,34 @@ viewIntro model =
 
 viewHyperlinks model =
     [ h2 [ class "display-4" ]
-        [ text "Stories and Poems" ]
+        [ text "Hypertext" ]
     , div [ class "list-group" ]
-        (List.map
-            (\( link, title ) ->
-                a
-                    [ href link
-                    , class "list-group-item list-group-item-action"
-                    ]
-                    [ text title ]
-            )
-            [ ( absolute [] [ Builder.string "q" "ericberg" ]
-              , "'Eric Berg Eric Berg' by Eric Berg"
-              )
-            , ( absolute [] [ Builder.string "q" "integer-quest" ]
-              , "Integer Quest"
-              )
-            , ( absolute [] [ Builder.string "q" "apocalypse-move" ]
-              , "Apocalypse Move"
-              )
-            ]
-        )
+        [ viewListLink
+            model
+            (Builder.custom Absolute [] [] <| Just "ericberg")
+            "'Eric Berg Eric Berg' by Eric Berg"
+        , viewListLink
+            model
+            (Builder.custom Absolute [] [] <| Just "integer-quest")
+            "Integer Quest"
+        , viewListLink
+            model
+            (Builder.custom Absolute [] [] <| Just "the-guild")
+            "The Guild"
+        , viewListLink
+            model
+            (Builder.custom Absolute [] [] <| Just "space-crawler")
+            "Space Crawler"
+        ]
     ]
+
+
+viewListLink model link title =
+    a
+        [ href link
+        , class "list-group-item list-group-item-action"
+        ]
+        [ text title ]
 
 
 viewNav model =
@@ -277,7 +291,4 @@ Welcome to my doubly concatenated website. It was a blog for a while, then a boo
 
 contentAfterFold =
     """
-I'm going to be publishing stories and poems here, coming in all forms. What are REST API logs but a hypertext story? What is a program but a poem?
-
-In the first batch, there's the browser-crashing one, one about addictive internet games, and one that's Powered by the Apocalypse inspired.
 """

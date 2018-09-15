@@ -4953,6 +4953,31 @@ var author$project$Main$Hypertext = function (a) {
 var elm$core$Basics$identity = function (x) {
 	return x;
 };
+var elm$url$Url$Parser$Parser = elm$core$Basics$identity;
+var elm$url$Url$Parser$State = F5(
+	function (visited, unvisited, params, frag, value) {
+		return {n: frag, p: params, m: unvisited, i: value, q: visited};
+	});
+var elm$url$Url$Parser$fragment = function (toFrag) {
+	return function (_n0) {
+		var visited = _n0.q;
+		var unvisited = _n0.m;
+		var params = _n0.p;
+		var frag = _n0.n;
+		var value = _n0.i;
+		return _List_fromArray(
+			[
+				A5(
+				elm$url$Url$Parser$State,
+				visited,
+				unvisited,
+				params,
+				frag,
+				value(
+					toFrag(frag)))
+			]);
+	};
+};
 var elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -5022,11 +5047,6 @@ var elm$core$List$map = F2(
 			_List_Nil,
 			xs);
 	});
-var elm$url$Url$Parser$Parser = elm$core$Basics$identity;
-var elm$url$Url$Parser$State = F5(
-	function (visited, unvisited, params, frag, value) {
-		return {n: frag, p: params, m: unvisited, i: value, q: visited};
-	});
 var elm$url$Url$Parser$mapState = F2(
 	function (func, _n0) {
 		var visited = _n0.q;
@@ -5085,27 +5105,6 @@ var elm$url$Url$Parser$oneOf = function (parsers) {
 			parsers);
 	};
 };
-var elm$url$Url$Parser$query = function (_n0) {
-	var queryParser = _n0;
-	return function (_n1) {
-		var visited = _n1.q;
-		var unvisited = _n1.m;
-		var params = _n1.p;
-		var frag = _n1.n;
-		var value = _n1.i;
-		return _List_fromArray(
-			[
-				A5(
-				elm$url$Url$Parser$State,
-				visited,
-				unvisited,
-				params,
-				frag,
-				value(
-					queryParser(params)))
-			]);
-	};
-};
 var elm$url$Url$Parser$slash = F2(
 	function (_n0, _n1) {
 		var parseBefore = _n0;
@@ -5117,49 +5116,21 @@ var elm$url$Url$Parser$slash = F2(
 				parseBefore(state));
 		};
 	});
-var elm$url$Url$Parser$questionMark = F2(
-	function (parser, queryParser) {
-		return A2(
-			elm$url$Url$Parser$slash,
-			parser,
-			elm$url$Url$Parser$query(queryParser));
-	});
 var elm$url$Url$Parser$top = function (state) {
 	return _List_fromArray(
 		[state]);
 };
-var elm$core$Basics$compare = _Utils_compare;
-var elm$core$Dict$get = F2(
-	function (targetKey, dict) {
-		get:
-		while (true) {
-			if (dict.$ === -2) {
-				return elm$core$Maybe$Nothing;
-			} else {
-				var key = dict.b;
-				var value = dict.c;
-				var left = dict.d;
-				var right = dict.e;
-				var _n1 = A2(elm$core$Basics$compare, targetKey, key);
-				switch (_n1) {
-					case 0:
-						var $temp$targetKey = targetKey,
-							$temp$dict = left;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-					case 1:
-						return elm$core$Maybe$Just(value);
-					default:
-						var $temp$targetKey = targetKey,
-							$temp$dict = right;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-				}
-			}
-		}
-	});
+var author$project$Main$routeParser = elm$url$Url$Parser$oneOf(
+	_List_fromArray(
+		[
+			A2(
+			elm$url$Url$Parser$map,
+			author$project$Main$Hypertext,
+			A2(
+				elm$url$Url$Parser$slash,
+				elm$url$Url$Parser$top,
+				elm$url$Url$Parser$fragment(elm$core$Basics$identity)))
+		]));
 var elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
 		if (!maybe.$) {
@@ -5169,41 +5140,6 @@ var elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
-var elm$url$Url$Parser$Internal$Parser = elm$core$Basics$identity;
-var elm$url$Url$Parser$Query$custom = F2(
-	function (key, func) {
-		return function (dict) {
-			return func(
-				A2(
-					elm$core$Maybe$withDefault,
-					_List_Nil,
-					A2(elm$core$Dict$get, key, dict)));
-		};
-	});
-var elm$url$Url$Parser$Query$string = function (key) {
-	return A2(
-		elm$url$Url$Parser$Query$custom,
-		key,
-		function (stringList) {
-			if (stringList.b && (!stringList.b.b)) {
-				var str = stringList.a;
-				return elm$core$Maybe$Just(str);
-			} else {
-				return elm$core$Maybe$Nothing;
-			}
-		});
-};
-var author$project$Main$routeParser = elm$url$Url$Parser$oneOf(
-	_List_fromArray(
-		[
-			A2(
-			elm$url$Url$Parser$map,
-			author$project$Main$Hypertext,
-			A2(
-				elm$url$Url$Parser$questionMark,
-				elm$url$Url$Parser$top,
-				elm$url$Url$Parser$Query$string('q')))
-		]));
 var elm$url$Url$Parser$getFirstMatch = function (states) {
 	getFirstMatch:
 	while (true) {
@@ -5255,6 +5191,38 @@ var elm$url$Url$Parser$preparePath = function (path) {
 };
 var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
+var elm$core$Basics$compare = _Utils_compare;
+var elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === -2) {
+				return elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _n1 = A2(elm$core$Basics$compare, targetKey, key);
+				switch (_n1) {
+					case 0:
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 1:
+						return elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
 var elm$core$Dict$Black = 1;
 var elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
@@ -6442,8 +6410,6 @@ var author$project$Main$update = F2(
 		}
 	});
 var elm$html$Html$a = _VirtualDom_node('a');
-var elm$html$Html$div = _VirtualDom_node('div');
-var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$json$Json$Encode$string = _Json_wrap;
@@ -6461,6 +6427,34 @@ var elm$html$Html$Attributes$href = function (url) {
 		'href',
 		_VirtualDom_noJavaScriptUri(url));
 };
+var author$project$Main$viewListLink = F3(
+	function (model, link, title) {
+		return A2(
+			elm$html$Html$a,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$href(link),
+					elm$html$Html$Attributes$class('list-group-item list-group-item-action')
+				]),
+			_List_fromArray(
+				[
+					elm$html$Html$text(title)
+				]));
+	});
+var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$h2 = _VirtualDom_node('h2');
+var elm$url$Url$Builder$Absolute = {$: 0};
+var elm$url$Url$Builder$rootToPrePath = function (root) {
+	switch (root.$) {
+		case 0:
+			return '/';
+		case 1:
+			return '';
+		default:
+			var prePath = root.a;
+			return prePath + '/';
+	}
+};
 var elm$url$Url$Builder$toQueryPair = function (_n0) {
 	var key = _n0.a;
 	var value = _n0.b;
@@ -6476,21 +6470,19 @@ var elm$url$Url$Builder$toQuery = function (parameters) {
 			A2(elm$core$List$map, elm$url$Url$Builder$toQueryPair, parameters));
 	}
 };
-var elm$url$Url$Builder$absolute = F2(
-	function (pathSegments, parameters) {
-		return '/' + (A2(elm$core$String$join, '/', pathSegments) + elm$url$Url$Builder$toQuery(parameters));
-	});
-var elm$url$Url$percentEncode = _Url_percentEncode;
-var elm$url$Url$Builder$QueryParameter = F2(
-	function (a, b) {
-		return {$: 0, a: a, b: b};
-	});
-var elm$url$Url$Builder$string = F2(
-	function (key, value) {
-		return A2(
-			elm$url$Url$Builder$QueryParameter,
-			elm$url$Url$percentEncode(key),
-			elm$url$Url$percentEncode(value));
+var elm$url$Url$Builder$custom = F4(
+	function (root, pathSegments, parameters, maybeFragment) {
+		var fragmentless = _Utils_ap(
+			elm$url$Url$Builder$rootToPrePath(root),
+			_Utils_ap(
+				A2(elm$core$String$join, '/', pathSegments),
+				elm$url$Url$Builder$toQuery(parameters)));
+		if (maybeFragment.$ === 1) {
+			return fragmentless;
+		} else {
+			var fragment = maybeFragment.a;
+			return fragmentless + ('#' + fragment);
+		}
 	});
 var author$project$Main$viewHyperlinks = function (model) {
 	return _List_fromArray(
@@ -6503,7 +6495,7 @@ var author$project$Main$viewHyperlinks = function (model) {
 				]),
 			_List_fromArray(
 				[
-					elm$html$Html$text('Stories and Poems')
+					elm$html$Html$text('Hypertext')
 				])),
 			A2(
 			elm$html$Html$div,
@@ -6511,56 +6503,52 @@ var author$project$Main$viewHyperlinks = function (model) {
 				[
 					elm$html$Html$Attributes$class('list-group')
 				]),
-			A2(
-				elm$core$List$map,
-				function (_n0) {
-					var link = _n0.a;
-					var title = _n0.b;
-					return A2(
-						elm$html$Html$a,
-						_List_fromArray(
-							[
-								elm$html$Html$Attributes$href(link),
-								elm$html$Html$Attributes$class('list-group-item list-group-item-action')
-							]),
-						_List_fromArray(
-							[
-								elm$html$Html$text(title)
-							]));
-				},
-				_List_fromArray(
-					[
-						_Utils_Tuple2(
-						A2(
-							elm$url$Url$Builder$absolute,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(elm$url$Url$Builder$string, 'q', 'ericberg')
-								])),
-						'\'Eric Berg Eric Berg\' by Eric Berg'),
-						_Utils_Tuple2(
-						A2(
-							elm$url$Url$Builder$absolute,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(elm$url$Url$Builder$string, 'q', 'integer-quest')
-								])),
-						'Integer Quest'),
-						_Utils_Tuple2(
-						A2(
-							elm$url$Url$Builder$absolute,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(elm$url$Url$Builder$string, 'q', 'apocalypse-move')
-								])),
-						'Apocalypse Move')
-					])))
+			_List_fromArray(
+				[
+					A3(
+					author$project$Main$viewListLink,
+					model,
+					A4(
+						elm$url$Url$Builder$custom,
+						elm$url$Url$Builder$Absolute,
+						_List_Nil,
+						_List_Nil,
+						elm$core$Maybe$Just('ericberg')),
+					'\'Eric Berg Eric Berg\' by Eric Berg'),
+					A3(
+					author$project$Main$viewListLink,
+					model,
+					A4(
+						elm$url$Url$Builder$custom,
+						elm$url$Url$Builder$Absolute,
+						_List_Nil,
+						_List_Nil,
+						elm$core$Maybe$Just('integer-quest')),
+					'Integer Quest'),
+					A3(
+					author$project$Main$viewListLink,
+					model,
+					A4(
+						elm$url$Url$Builder$custom,
+						elm$url$Url$Builder$Absolute,
+						_List_Nil,
+						_List_Nil,
+						elm$core$Maybe$Just('the-guild')),
+					'The Guild'),
+					A3(
+					author$project$Main$viewListLink,
+					model,
+					A4(
+						elm$url$Url$Builder$custom,
+						elm$url$Url$Builder$Absolute,
+						_List_Nil,
+						_List_Nil,
+						elm$core$Maybe$Just('space-crawler')),
+					'Space Crawler')
+				]))
 		]);
 };
-var author$project$Main$contentAfterFold = '\nI\'m going to be publishing stories and poems here, coming in all forms. What are REST API logs but a hypertext story? What is a program but a poem?\n\nIn the first batch, there\'s the browser-crashing one, one about addictive internet games, and one that\'s Powered by the Apocalypse inspired.\n';
+var author$project$Main$contentAfterFold = '\n';
 var author$project$Main$contentLead = '\nWelcome to my doubly concatenated website. It was a blog for a while, then a book-like interface to a blog, and finally a browser-crashing poem. Then it vanished, unregistered.\n';
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$hr = _VirtualDom_node('hr');
@@ -6720,7 +6708,7 @@ var author$project$Main$viewHypertext = F2(
 								elm$core$String$fromInt(model.H))
 							]))
 					]);
-			case 'apocalypse-move':
+			case 'the-guild':
 				return _List_fromArray(
 					[
 						author$project$Main$viewNav(model),
@@ -6730,7 +6718,27 @@ var author$project$Main$viewHypertext = F2(
 						_List_Nil,
 						_List_fromArray(
 							[
-								elm$html$Html$text('Apocalypse Move')
+								elm$html$Html$text('The Guild')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Coming soon...')
+							]))
+					]);
+			case 'space-crawler':
+				return _List_fromArray(
+					[
+						author$project$Main$viewNav(model),
+						A2(elm$html$Html$br, _List_Nil, _List_Nil),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Space Crawler')
 							])),
 						A2(
 						elm$html$Html$p,
